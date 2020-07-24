@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+                isLoaded = false
                 val errorMessage = "Got Error! $error"
                 showToast(errorMessage)
                 infoTV.text = errorMessage
