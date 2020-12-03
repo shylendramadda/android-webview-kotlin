@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WebViewKotlin</string>
+    <string name="app_name">OneStore</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="no_internet">No internet connection!</string>
     <string name="settings">Settings</string>

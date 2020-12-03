@@ -27,13 +27,14 @@ class MainActivity : AppCompatActivity() {
     private var progress: Progress? = null
     private var isLoaded: Boolean = false
     private var doubleBackToExitPressedOnce = false
-    private var webURL = "https://www.geeklabs.co.in/" // Change it with your URL
+    private var webURL = "https://astoreone.com/" // Change it with your URL
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         webView.settings.javaScriptEnabled = true
+        progress = Progress(this, R.string.please_wait, cancelable = true)
         if (!isOnline()) {
             showToast(getString(R.string.no_internet))
             infoTV.text = getString(R.string.no_internet)
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadWebView() {
+        showProgress(true)
         infoTV.text = ""
         webView.loadUrl(webURL)
         webView.webViewClient = object : WebViewClient() {
@@ -58,13 +60,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                setProgressDialogVisibility(true)
+                showProgress(true)
                 super.onPageStarted(view, url, favicon)
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 isLoaded = true
-                setProgressDialogVisibility(false)
+                showProgress(false)
                 super.onPageFinished(view, url)
             }
 
@@ -73,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 val errorMessage = "Got Error! $error"
                 showToast(errorMessage)
                 infoTV.text = errorMessage
-                setProgressDialogVisibility(false)
+                showProgress(false)
                 super.onReceivedError(view, request, error)
             }
         }
@@ -106,8 +108,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setProgressDialogVisibility(visible: Boolean) {
-        if (visible) progress = Progress(this, R.string.please_wait, cancelable = true)
+    private fun showProgress(visible: Boolean) {
         progress?.apply { if (visible) show() else dismiss() }
     }
 
